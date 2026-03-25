@@ -1,14 +1,35 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils import executor
+import requests
 
+# === НАСТРОЙКИ ===
 TOKEN = "8291438508:AAHgthyIsWwe1ASV-OW_MrH1_qtl7ECM0zk"
+WEBHOOK_URL = "https://discord.com/api/webhooks/1486446590188196145/rGH5CIxK6ph3XxDPdP7P2iybT70jR77JjVVp7hkhmKIIyRBhq0ZK41A9WbfjEsoaRjbY"
 
 bot = Bot(token=TOKEN, parse_mode="HTML")
 dp = Dispatcher(bot)
 
+# === ОТПРАВКА В DISCORD ===
+async def send_to_discord(user):
+    data = {
+        "content": (
+            f"🚀 Новый пользователь!\n\n"
+            f"👤 Username: @{user.username}\n"
+            f"🆔 ID: {user.id}\n"
+            f"📛 Имя: {user.full_name}"
+        )
+    }
+    try:
+        requests.post(WEBHOOK_URL, json=data)
+    except:
+        pass
+
+# === START ===
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
+    await send_to_discord(message.from_user)
+
     keyboard = InlineKeyboardMarkup(row_width=1)
     keyboard.add(
         InlineKeyboardButton("🎁 Получить бесплатно", callback_data="free"),
@@ -49,6 +70,7 @@ async def start(message: types.Message):
 
     await message.answer(text, reply_markup=keyboard)
 
+# === CALLBACK ===
 @dp.callback_query_handler(lambda c: c.data == "free")
 async def free(callback_query: types.CallbackQuery):
     alert_text = (
@@ -58,5 +80,6 @@ async def free(callback_query: types.CallbackQuery):
     )
     await callback_query.answer(alert_text, show_alert=True)
 
+# === ЗАПУСК ===
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
