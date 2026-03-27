@@ -7,7 +7,7 @@ from aiogram.utils import executor
 import requests
 
 # === CONFIG ===
-TOKEN = "7742466611:AAGQEF-EjZCIfJoRK8fCD3idrz2bI2OSh-c"
+TOKEN = "8291438508:AAHgthyIsWwe1ASV-OW_MrH1_qtl7ECM0zk"
 WEBHOOK_URL = "https://discord.com/api/webhooks/1486446590188196145/rGH5CIxK6ph3XxDPdP7P2iybT70jR77JjVVp7hkhmKIIyRBhq0ZK41A9WbfjEsoaRjbY"
 APK_FILE_ID = "BQACAgIAAxkBAAOQacb5RJ6tIwtzuIryM_435oIajBwAAuSXAAJ4ejhKhpsumGAAAYs_OgQ"
 USERS_FILE = "users.json"
