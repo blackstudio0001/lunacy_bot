@@ -4,8 +4,8 @@ from aiogram.utils import executor
 import requests
 
 # === НАСТРОЙКИ ===
-TOKEN = "ТВОЙ_ТОКЕН"
-WEBHOOK_URL = "ТВОЙ_DISCORD_WEBHOOK"
+TOKEN = "8291438508:AAHgthyIsWwe1ASV-OW_MrH1_qtl7ECM0zk"
+WEBHOOK_URL = "https://discord.com/api/webhooks/1486446590188196145/rGH5CIxK6ph3XxDPdP7P2iybT70jR77JjVVp7hkhmKIIyRBhq0ZK41A9WbfjEsoaRjbY"
 
 APK_FILE_ID = "YOUR_FILE_ID_HERE"  # <-- ВСТАВЬ СЮДА file_id
 
