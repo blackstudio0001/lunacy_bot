@@ -4,8 +4,10 @@ from aiogram.utils import executor
 import requests
 
 # === НАСТРОЙКИ ===
-TOKEN = "8291438508:AAHgthyIsWwe1ASV-OW_MrH1_qtl7ECM0zk"
-WEBHOOK_URL = "https://discord.com/api/webhooks/1486446590188196145/rGH5CIxK6ph3XxDPdP7P2iybT70jR77JjVVp7hkhmKIIyRBhq0ZK41A9WbfjEsoaRjbY"
+TOKEN = "ТВОЙ_ТОКЕН"
+WEBHOOK_URL = "ТВОЙ_DISCORD_WEBHOOK"
+
+APK_FILE_ID = "YOUR_FILE_ID_HERE"  # <-- ВСТАВЬ СЮДА file_id
 
 bot = Bot(token=TOKEN, parse_mode="HTML")
 dp = Dispatcher(bot)
@@ -25,6 +27,12 @@ async def send_to_discord(user):
     except:
         pass
 
+# === ПОЛУЧЕНИЕ FILE_ID (временно) ===
+@dp.message_handler(content_types=['document'])
+async def get_file_id(message: types.Message):
+    file_id = message.document.file_id
+    await message.reply(f"FILE_ID:\n{file_id}")
+
 # === START ===
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
@@ -33,6 +41,7 @@ async def start(message: types.Message):
     keyboard = InlineKeyboardMarkup(row_width=1)
     keyboard.add(
         InlineKeyboardButton("🎁 Получить бесплатно", callback_data="free"),
+        InlineKeyboardButton("📥 Скачать APK", callback_data="download"),
         InlineKeyboardButton("📢 Подписаться на канал", url="https://t.me/Lunacy_Standoff")
     )
 
@@ -70,7 +79,7 @@ async def start(message: types.Message):
 
     await message.answer(text, reply_markup=keyboard)
 
-# === CALLBACK ===
+# === CALLBACK: FREE ===
 @dp.callback_query_handler(lambda c: c.data == "free")
 async def free(callback_query: types.CallbackQuery):
     alert_text = (
@@ -79,6 +88,16 @@ async def free(callback_query: types.CallbackQuery):
         "Подписывайся, чтобы не пропустить!"
     )
     await callback_query.answer(alert_text, show_alert=True)
+
+# === CALLBACK: DOWNLOAD APK ===
+@dp.callback_query_handler(lambda c: c.data == "download")
+async def download(callback_query: types.CallbackQuery):
+    await bot.send_document(
+        chat_id=callback_query.from_user.id,
+        document=APK_FILE_ID,
+        caption="📥 Вот твой APK файл"
+    )
+    await callback_query.answer()
 
 # === ЗАПУСК ===
 if __name__ == "__main__":
